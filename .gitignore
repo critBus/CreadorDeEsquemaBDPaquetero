@@ -1,0 +1,15 @@
+bin
+obj
+libs
+dllsR
+.vs
+packages
+*.nupkg
+/*/bin
+/*/obj
+/*/.vs
+/*/*.nupkg
+/*/libs
+/*/dllsR
+/*/packages
+
