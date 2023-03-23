@@ -46,7 +46,7 @@ namespace CreadorDeEsquemaBDPaquetero
             Pelicula.addC("Definicion", TAMAÑO_GRANDE);
             Pelicula.addC("Idioma", TAMAÑO_GRANDE);
             Pelicula.addC("Formato", TAMAÑO_GRANDE);
-            Pelicula.addC("Genero", TAMAÑO_GRANDE);
+            ColumnaDeModeloBD c_genero_Pelicula= Pelicula.addC("Genero", TAMAÑO_GRANDE);
 
             Pelicula.addC("film_affinity", TipoDeDatoSQL.BOOLEAN);
             Pelicula.addC("imdb", TipoDeDatoSQL.BOOLEAN);
@@ -59,6 +59,7 @@ namespace CreadorDeEsquemaBDPaquetero
             Pelicula.addBuscarListaPor(c_nombreIng_Pelicula);
             Pelicula.addBuscarListaPor(c_nombre_Pelicula);
             Pelicula.addBuscarListaPor(c_nombre_Pelicula, c_nombreIng_Pelicula);
+            Pelicula.addBuscarListaPor(c_genero_Pelicula);
 
 
             Pelicula.addExiste(c_nombreIng_Pelicula);
@@ -77,7 +78,7 @@ namespace CreadorDeEsquemaBDPaquetero
             Serie.addC("Inicial", TAMAÑO_GRANDE);
             Serie.addC("EnCurso", TipoDeDatoSQL.BOOLEAN);
 
-            Serie.addC("Genero", TipoDeClasificacionSQL.NOT_NULL);
+            ColumnaDeModeloBD c_genero_Serie= Serie.addC("Genero", TipoDeClasificacionSQL.NOT_NULL);
 
             Serie.addC("film_affinity", TipoDeDatoSQL.BOOLEAN);
             Serie.addC("imdb", TipoDeDatoSQL.BOOLEAN);
@@ -90,6 +91,7 @@ namespace CreadorDeEsquemaBDPaquetero
             Serie.addBuscarListaPor(c_titulo_Serie);
             Serie.addBuscarListaPor(c_tituloIng_Serie);
             Serie.addBuscarListaPor(c_titulo_Serie, c_tituloIng_Serie);
+            Serie.addBuscarListaPor(c_genero_Serie);
 
             Serie.addExiste(c_titulo_Serie);
             Serie.addExiste(c_tituloIng_Serie);
@@ -134,12 +136,25 @@ namespace CreadorDeEsquemaBDPaquetero
             Genero.addExiste(c_genero_Genero);
 
 
+            ModeloBD_ID SeriesTemporadas = new ModeloBD_ID("seriestemporadas");
+            SeriesTemporadas.addC("Temporada", TAMAÑO_GRANDE);
+            SeriesTemporadas.addC("Capitulos", TAMAÑO_GRANDE);
+            SeriesTemporadas.addC("Definicion", TAMAÑO_GRANDE);
+            SeriesTemporadas.addC("Anno", TAMAÑO_GRANDE);
+            SeriesTemporadas.addC("Idioma", TAMAÑO_GRANDE);
+            SeriesTemporadas.addC("Formato", TAMAÑO_GRANDE);
+            SeriesTemporadas.addC_ID("IdSerie", Serie);
+
+            Serie.addGetListaDe(SeriesTemporadas);
+
+            //            SeriesTemporadas.ListaOneToMany.
+
             EsquemaBD e = new EsquemaBD();
-            e.addModelo(Pelicula, Serie, Actor, Saga, Formato, Genero);
+            e.addModelo(Pelicula, Serie, Actor, Saga, Formato, Genero, SeriesTemporadas);
             //e.addManyToMany(Pelicula, Actor,);
             e.addManyToMany(Serie, "serial_id", Actor, "actor_id", "series_actor").setIdStr("id");
             e.addManyToMany(Pelicula, "movie_id", Actor, "actor_id", "peliculas_actor").setIdStr("id");
-
+            
             e.IdDeafult = "Id";
 
             return e;
