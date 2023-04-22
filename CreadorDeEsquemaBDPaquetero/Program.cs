@@ -147,10 +147,38 @@ namespace CreadorDeEsquemaBDPaquetero
 
             Serie.addGetListaDe(SeriesTemporadas);
 
-            //            SeriesTemporadas.ListaOneToMany.
+            ModeloBD_ID Autor = new ModeloBD_ID("autors");
+            ColumnaDeModeloBD c_nombre_Autor = Autor.addC("Nombre", TAMAÑO_GRANDE);
+            Autor.addC("Foto", TAMAÑO_FOTO);
+
+
+
+            Autor.addBuscarPor(c_nombre_Autor);
+            Autor.addBuscarListaPor(c_nombre_Autor);
+            Autor.addExiste(c_nombre_Autor);
+
+
+            ModeloBD_ID Album = new ModeloBD_ID("albums");
+            ColumnaDeModeloBD c_titulo_Album = Album.addC("Titulo", TAMAÑO_GRANDE);
+            Album.addC("Anno", TipoDeDatoSQL.INTEGER);
+            Album.addC("Foto", TAMAÑO_FOTO);
+            Album.addC("IdAutorNavigationId", TipoDeDatoSQL.INTEGER);
+            Album.addC("FotoBack", TAMAÑO_FOTO);
+            ColumnaDeModeloBD c_idAutor_Album = Album.addC_ID("IdAutor", Autor);
+
+            Album.addBuscarPor(c_titulo_Album);
+            Album.addBuscarListaPor(c_titulo_Album);
+            Album.addExiste(c_titulo_Album);
+
+            Album.addBuscarPor(c_titulo_Album, c_idAutor_Album);
+            Album.addBuscarListaPor(c_titulo_Album, c_idAutor_Album);
+            Album.addExiste(c_titulo_Album, c_idAutor_Album);
+
+            Autor.addGetListaDe(Album);
+            
 
             EsquemaBD e = new EsquemaBD();
-            e.addModelo(Pelicula, Serie, Actor, Saga, Formato, Genero, SeriesTemporadas);
+            e.addModelo(Pelicula, Serie, Actor, Saga, Formato, Genero, SeriesTemporadas, Autor,Album);
             //e.addManyToMany(Pelicula, Actor,);
             e.addManyToMany(Serie, "serial_id", Actor, "actor_id", "series_actor").setIdStr("id");
             e.addManyToMany(Pelicula, "movie_id", Actor, "actor_id", "peliculas_actor").setIdStr("id");
