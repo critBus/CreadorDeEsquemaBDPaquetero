@@ -208,7 +208,7 @@ namespace CreadorDeEsquemaBDPaquetero
             DVD.addBuscarListaPor(c_titulo_DVD, c_Autor_DVD);
             DVD.addExiste(c_titulo_DVD, c_Autor_DVD);
 
-            Autor.addGetListaDe(DVD, c_Autor_DVD,"ListaDeDVDs");
+            Autor.addGetListaDe(c_nombre_Autor, DVD, c_Autor_DVD,"ListaDeDVDs");
 
             ModeloBD_ID CancionDVD = new ModeloBD_ID("canciondvd");
             ColumnaDeModeloBD c_nombre_CancionDVD = CancionDVD.addC("Nombre", TAMAÑO_GRANDE);
