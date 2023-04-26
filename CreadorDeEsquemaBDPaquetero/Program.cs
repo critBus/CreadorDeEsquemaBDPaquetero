@@ -9,6 +9,7 @@ using ReneUtiles.Clases.BD;
 using ReneUtiles.Clases.BD.Factory;
 
 using Delimon.Win32.IO;
+using ReneUtiles.Clases.BD.Factory.UtilesFactory;
 
 namespace CreadorDeEsquemaBDPaquetero
 {
@@ -175,18 +176,75 @@ namespace CreadorDeEsquemaBDPaquetero
             Album.addExiste(c_titulo_Album, c_idAutor_Album);
 
             Autor.addGetListaDe(Album);
-            
+
+
+            ModeloBD_ID CancionAlbum = new ModeloBD_ID("cancionalbums");
+            ColumnaDeModeloBD c_titulo_CancionAlbum = CancionAlbum.addC("Titulo", TAMAÑO_GRANDE);
+            ColumnaDeModeloBD c_IdAlbum_CancionAlbum = CancionAlbum.addC_ID("IdAlbum", Album);
+
+            CancionAlbum.addBuscarPor(c_titulo_CancionAlbum);
+            CancionAlbum.addBuscarListaPor(c_titulo_CancionAlbum);
+            CancionAlbum.addExiste(c_titulo_CancionAlbum);
+
+            CancionAlbum.addBuscarPor(c_titulo_CancionAlbum, c_IdAlbum_CancionAlbum);
+            CancionAlbum.addBuscarListaPor(c_titulo_CancionAlbum, c_IdAlbum_CancionAlbum);
+            CancionAlbum.addExiste(c_titulo_CancionAlbum, c_IdAlbum_CancionAlbum);
+
+            Album.addGetListaDe(CancionAlbum);
+
+
+            ModeloBD_ID DVD = new ModeloBD_ID("dvd");
+            ColumnaDeModeloBD c_titulo_DVD = DVD.addC("Titulo", TAMAÑO_GRANDE);
+            ColumnaDeModeloBD c_Autor_DVD = DVD.addC("Autor", TAMAÑO_GRANDE);
+            DVD.addC("Anno", TipoDeDatoSQL.INTEGER);
+            DVD.addC("Foto", TAMAÑO_FOTO);
+            DVD.addC("FotoBack", TAMAÑO_FOTO);
+
+            DVD.addBuscarPor(c_titulo_DVD);
+            DVD.addBuscarListaPor(c_titulo_DVD);
+            DVD.addExiste(c_titulo_DVD);
+
+            DVD.addBuscarPor(c_titulo_DVD, c_Autor_DVD);
+            DVD.addBuscarListaPor(c_titulo_DVD, c_Autor_DVD);
+            DVD.addExiste(c_titulo_DVD, c_Autor_DVD);
+
+            Autor.addGetListaDe(DVD, c_Autor_DVD,"ListaDeDVDs");
+
+            ModeloBD_ID CancionDVD = new ModeloBD_ID("canciondvd");
+            ColumnaDeModeloBD c_nombre_CancionDVD = CancionDVD.addC("Nombre", TAMAÑO_GRANDE);
+            ColumnaDeModeloBD c_IdDvd_CancionDVD = CancionDVD.addC_ID("IdDvd", DVD);
+
+            CancionDVD.addBuscarPor(c_nombre_CancionDVD);
+            CancionDVD.addBuscarListaPor(c_nombre_CancionDVD);
+            CancionDVD.addExiste(c_nombre_CancionDVD);
+
+            CancionDVD.addBuscarPor(c_nombre_CancionDVD, c_IdDvd_CancionDVD);
+            CancionDVD.addBuscarListaPor(c_nombre_CancionDVD, c_IdDvd_CancionDVD);
+            CancionDVD.addExiste(c_nombre_CancionDVD, c_IdDvd_CancionDVD);
+
+            DVD.addGetListaDe(CancionDVD);
 
             EsquemaBD e = new EsquemaBD();
-            e.addModelo(Pelicula, Serie, Actor, Saga, Formato, Genero, SeriesTemporadas, Autor,Album);
+            e.addModelo(Pelicula, Serie, Actor, Saga
+                , Formato, Genero, SeriesTemporadas, Autor
+                ,Album, CancionAlbum, DVD, CancionDVD);
             //e.addManyToMany(Pelicula, Actor,);
             e.addManyToMany(Serie, "serial_id", Actor, "actor_id", "series_actor").setIdStr("id");
             e.addManyToMany(Pelicula, "movie_id", Actor, "actor_id", "peliculas_actor").setIdStr("id");
-            
+            //getAlbums_PG_For_Nombre
+
+            //e.addInnerJoinOne(Album, le( c_idAutor_Album,Autor), le(Album, c_nombre_Autor));
+            e.addInnerJoinOne(Album, le(c_idAutor_Album, Autor), le(c_titulo_Album, c_nombre_Autor));
+
             e.IdDeafult = "Id";
 
             return e;
         }
+
+        public static List<ElementoPorElQueBuscar> le(params ElementoPorElQueBuscar[] P) {
+            return P.ToList();
+        }
+
         public static void crearBD_Sharp_BDPostgres(EsquemaBD e)
         {
 
