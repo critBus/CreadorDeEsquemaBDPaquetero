@@ -268,7 +268,8 @@ namespace CreadorDeEsquemaBDPaquetero
 
             //f.idDeafult = "Id";
             //f.TipoDeConexion = TipoDeConexionBD.SQL_LITE;
-            f.crearCodigoCSharp(new DirectoryInfo(@"D:\_Cosas\pincha\Paqutero Vietnamita Frances con Katanas\Segundo trabajo\EsquemaBD_C#\BDPaquetero_EsquemaYUtilesConsola\BDPaquetero\BDManagerPeliculas"));
+            //f.crearCodigoCSharp(new DirectoryInfo(@"D:\_Cosas\pincha\Paqutero Vietnamita Frances con Katanas\Segundo trabajo\EsquemaBD_C#\BDPaquetero_EsquemaYUtilesConsola\BDPaquetero\BDManagerPeliculas"));
+            f.crearCodigoCSharp(new DirectoryInfo(@"D:\_Cosas\pincha\Paqutero_Vietnamita_Frances_con_Katanas\Proyecto_Android\CreadorDeUtilesJsonPaqutero\CreadorDeUtilesJsonPaqutero\ModelosBDPostgres"));
             cwl("termino");
         }
 
